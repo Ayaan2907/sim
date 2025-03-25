@@ -1,6 +1,7 @@
 import { StartIcon } from '@/components/icons'
 import { ToolResponse } from '@/tools/types'
 import { BlockConfig } from '../types'
+import { WEBHOOK_PROVIDERS } from '@/app/w/[id]/components/workflow-block/components/sub-block/components/webhook/webhook-config'
 
 interface StarterBlockOutput extends ToolResponse {
   output: {
@@ -38,12 +39,14 @@ export const StarterBlock: BlockConfig<StarterBlockOutput> = {
       type: 'dropdown',
       layout: 'full',
       options: [
-        { label: 'Generic', id: 'generic' },
-        { label: 'WhatsApp', id: 'whatsapp' },
-        { label: 'GitHub', id: 'github' },
-        { label: 'Discord', id: 'discord' },
-        { label: 'Slack', id: 'slack' },
-        // { label: 'Stripe', id: 'stripe' },
+        // Add all providers from WEBHOOK_PROVIDERS
+        ...Object.entries(WEBHOOK_PROVIDERS)
+          .sort(([, a], [, b]) => a.name.localeCompare(b.name))
+          .map(([id, provider]) => ({
+            label: provider.name,
+            id,
+            icon: provider.icon,
+          })),
       ],
       value: () => 'generic',
       condition: { field: 'startWorkflow', value: 'webhook' },

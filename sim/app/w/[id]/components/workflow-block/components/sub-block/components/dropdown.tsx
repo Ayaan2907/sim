@@ -9,7 +9,7 @@ import {
 import { useSubBlockValue } from '../hooks/use-sub-block-value'
 
 interface DropdownProps {
-  options: Array<string | { label: string; id: string }>
+  options: Array<string | { label: string; id: string; icon?: (props: { className?: string }) => React.ReactNode }>
   defaultValue?: string
   blockId: string
   subBlockId: string
@@ -34,6 +34,11 @@ export function Dropdown({ options, defaultValue, blockId, subBlockId }: Dropdow
   const getOptionLabel = (option: string | { label: string; id: string }) => {
     return typeof option === 'string' ? option : option.label
   }
+  
+  const getOptionIcon = (option: string | { label: string; id: string; icon?: (props: { className?: string }) => React.ReactNode }) => {
+    if (typeof option === 'string' || !option.icon) return null;
+    return option.icon({ className: 'h-4 w-4' });
+  }
 
   return (
     <Select
@@ -47,7 +52,10 @@ export function Dropdown({ options, defaultValue, blockId, subBlockId }: Dropdow
       <SelectContent>
         {options.map((option) => (
           <SelectItem key={getOptionValue(option)} value={getOptionValue(option)}>
-            {getOptionLabel(option)}
+            <div className="flex items-center gap-2">
+              {getOptionIcon(option)}
+              <span>{getOptionLabel(option)}</span>
+            </div>
           </SelectItem>
         ))}
       </SelectContent>
