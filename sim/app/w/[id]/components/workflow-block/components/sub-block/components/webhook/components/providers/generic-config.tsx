@@ -47,7 +47,11 @@ export function GenericConfig({
             checked={requireAuth}
             onCheckedChange={(checked) => setRequireAuth(checked as boolean)}
           />
-          <Label htmlFor="require-auth" className="text-sm font-medium cursor-pointer">
+          <Label 
+            htmlFor="require-auth" 
+            className="text-sm font-medium cursor-pointer"
+            onClick={() => setRequireAuth(!requireAuth)}
+          >
             Require Authentication
           </Label>
         </div>
