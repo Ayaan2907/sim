@@ -13,9 +13,10 @@ interface DropdownProps {
   defaultValue?: string
   blockId: string
   subBlockId: string
+  disabled?: boolean
 }
 
-export function Dropdown({ options, defaultValue, blockId, subBlockId }: DropdownProps) {
+export function Dropdown({ options, defaultValue, blockId, subBlockId, disabled }: DropdownProps) {
   const [value, setValue] = useSubBlockValue(blockId, subBlockId, true)
 
   // Set the value to the first option if it's not set
@@ -45,6 +46,7 @@ export function Dropdown({ options, defaultValue, blockId, subBlockId }: Dropdow
       value={value as string | undefined}
       defaultValue={defaultValue ?? getOptionValue(options[0])}
       onValueChange={(value) => setValue(value)}
+      disabled={disabled}
     >
       <SelectTrigger className="text-left">
         <SelectValue placeholder="Select an option" />

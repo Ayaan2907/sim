@@ -20,6 +20,7 @@ import { Table } from './components/table'
 import { TimeInput } from './components/time-input'
 import { ToolInput } from './components/tool-input/tool-input'
 import { WebhookConfig } from './components/webhook/webhook-config'
+import { useWebhookState } from './hooks/use-webhook-state'
 
 interface SubBlockProps {
   blockId: string
@@ -41,6 +42,8 @@ export function SubBlock({ blockId, config, isConnecting }: SubBlockProps) {
 
     return blockConfig.inputs[config.id]?.required === true
   }
+  const { isWebhookConnected } = useWebhookState(blockId)  
+  const isWebhookProviderDisabled = isWebhookConnected && config.id === 'webhookProvider'
 
   const renderInput = () => {
     switch (config.type) {
@@ -72,6 +75,7 @@ export function SubBlock({ blockId, config, isConnecting }: SubBlockProps) {
               blockId={blockId}
               subBlockId={config.id}
               options={config.options as string[]}
+              disabled={isWebhookProviderDisabled}
             />
           </div>
         )
